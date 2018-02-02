@@ -40,12 +40,13 @@ class Rack::Timeout::StateChangeLoggingObserver
     info = env[::Rack::Timeout::ENV_INFO_KEY]
     level = STATE_LOG_LEVEL[info.state]
     logger(env).send(level) do
-      s  = "source=rack-timeout"
-      s << " id="      << info.id           if info.id
-      s << " wait="    << info.ms(:wait)    if info.wait
-      s << " timeout=" << info.ms(:timeout) if info.timeout
-      s << " service=" << info.ms(:service) if info.service
-      s << " state="   << info.state.to_s   if info.state
+      s  = '{ "source" : "rack-timeout"'
+      s << ', "id": "'      << info.id + '"'           if info.id
+      s << ', "wait": "'    << info.ms(:wait) + '"'    if info.wait
+      s << ', "timeout": "' << info.ms(:timeout) + '"' if info.timeout
+      s << ', "service": "' << info.ms(:service) + '"' if info.service
+      s << ', "state": "'   << info.state.to_s + '"'   if info.state
+      s << " }"
       s
     end
   end
